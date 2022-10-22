@@ -18,10 +18,10 @@ export class LastFM implements ILastFM {
 	private readonly _credentialStorage: ILastFMCredentialStorage;
 	private readonly _authorizationProvider: ILastFMAuthorizationProvider;
 
-	public constructor() {
+	public constructor(credentialStorage: ILastFMCredentialStorage) {
 		this._callSigner = new LastFMCallSigner({ sharedSecret: this._sharedSecret });
 
-		this._credentialStorage = new LastFMCredentialStorage();
+		this._credentialStorage = credentialStorage;
 
 		this._authorizationProvider = new LastFMAuthorizationProvider({
 			apiKey: this._apiKey,

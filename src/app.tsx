@@ -1,15 +1,19 @@
 import React from 'react';
 import { ILastFM, LastFM } from './last-fm/last-fm';
 import { ILastFMAuthorizationProvider } from './last-fm/last-fm-authorization-provider';
+import { ILastFMCredentialStorage, LastFMCredentialStorage } from './last-fm/last-fm-credential-storage';
+import { Header } from './ui-kit/header';
 
 interface AppProps {}
 
 interface AppState {
 	isAuthenticated: boolean;
 	isAuthorized: boolean;
+	username: string | null;
 }
 
 export class App extends React.Component<AppProps, AppState> {
+	private readonly _lastFMCredentialStorage: ILastFMCredentialStorage;
 	private readonly _lastFM: ILastFM;
 	private readonly _lastFMAuthorizationProvider: ILastFMAuthorizationProvider;
 
@@ -19,30 +23,31 @@ export class App extends React.Component<AppProps, AppState> {
 		this.state = {
 			isAuthenticated: false,
 			isAuthorized: false,
+			username: null,
 		};
 
-		this._lastFM = new LastFM();
+		this._lastFMCredentialStorage = new LastFMCredentialStorage();
+
+		this._lastFM = new LastFM(this._lastFMCredentialStorage);
 		this._lastFMAuthorizationProvider = this._lastFM.getAuthorizationProvider();
 	}
 
 	public override componentDidMount(): void {
-		this.setState({ isAuthenticated: this._lastFMAuthorizationProvider.checkIsAuthenticated() });
+		this.setState({
+			isAuthenticated: this._lastFMAuthorizationProvider.checkIsAuthenticated(),
+			username: this._lastFMCredentialStorage.load()?.session.name ?? null,
+		});
 	}
 
 	public override render(): JSX.Element {
 		return (
-			<div>
-				{
-					!this.state.isAuthenticated
-					&& !this.state.isAuthorized
-					&& <button onClick={ this._authenticate }>Authenticate</button>
-				}
-				{
-					this.state.isAuthenticated
-					&& !this.state.isAuthorized
-					&& <button onClick={ this._authorize }>Authorize</button>
-				}
-			</div>
+			<Header
+				isAuthenticated={ this.state.isAuthenticated }
+				isAuthorized={ this.state.isAuthorized }
+				username={ this.state.username }
+				authenticate={ this._authenticate }
+				authorize={ this._authorize }
+			/>
 		);
 	}
 
@@ -53,6 +58,9 @@ export class App extends React.Component<AppProps, AppState> {
 	private _authorize = async (): Promise<void> => {
 		await this._lastFMAuthorizationProvider.authorize();
 
-		this.setState({ isAuthorized: this._lastFMAuthorizationProvider.checkIsAuthorized() });
+		this.setState({
+			isAuthorized: this._lastFMAuthorizationProvider.checkIsAuthorized(),
+			username: this._lastFMCredentialStorage.load()?.session.name ?? null,
+		});
 	};
 }
