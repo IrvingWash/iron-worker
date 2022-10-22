@@ -5,7 +5,6 @@ export interface ILastFMCallSigner {
 }
 
 interface LastFMCallSignerParams {
-	apiKey: string;
 	sharedSecret: string;
 }
 

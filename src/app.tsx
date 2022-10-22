@@ -28,12 +28,16 @@ export class App extends React.Component<AppProps, AppState> {
 		return (
 			<div>
 				{ !this.state.isAuthenticated && <button onClick={ this._authenticate }>Authenticate</button> }
-				<button>Authorize</button>
+				<button onClick={ this._authorize }>Authorize</button>
 			</div>
 		);
 	}
 
 	private _authenticate = (): void => {
 		this._lastFM.authorizationProvider.authenticate();
+	};
+
+	private _authorize = async (): Promise<void> => {
+		await this._lastFM.authorizationProvider.authorize();
 	};
 }
