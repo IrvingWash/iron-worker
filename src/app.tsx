@@ -27,12 +27,13 @@ export class App extends React.Component<AppProps, AppState> {
 	public override render(): JSX.Element {
 		return (
 			<div>
-				{ !this.state.isAuthenticated && <button onClick={ this._authorize }>Authorize</button> }
+				{ !this.state.isAuthenticated && <button onClick={ this._authenticate }>Authenticate</button> }
+				<button>Authorize</button>
 			</div>
 		);
 	}
 
-	private _authorize = (): void => {
+	private _authenticate = (): void => {
 		this._lastFM.authorizationProvider.authenticate();
 	};
 }

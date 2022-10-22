@@ -36,8 +36,6 @@ export class LastFMAuthorizationProvider {
 	public checkIsAuthenticated(): boolean {
 		const currentUrl = new URL(window.location.href);
 
-		console.log(Boolean(currentUrl.searchParams.get('token')));
-
 		return Boolean(currentUrl.searchParams.get('token'));
 	}
 

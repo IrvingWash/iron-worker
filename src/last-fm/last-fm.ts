@@ -5,7 +5,7 @@ export interface ILastFM {
 	authorizationProvider: ILastFMAuthorizationProvider;
 }
 
-export class LastFM {
+export class LastFM implements ILastFM {
 	public readonly authorizationProvider: ILastFMAuthorizationProvider;
 
 	private readonly _apiKey = ensureDefined(process.env.API_KEY);
