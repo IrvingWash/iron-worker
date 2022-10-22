@@ -80,6 +80,7 @@ export class LastFMAuthorizationProvider {
 		authorizationUrl.searchParams.append('api_key', this._apiKey);
 		authorizationUrl.searchParams.append('token', this._authenticationToken);
 		authorizationUrl.searchParams.append('method', 'auth.getSession');
+		authorizationUrl.searchParams.append('format', 'json');
 
 		authorizationUrl.searchParams.append('api_sig', this._callSigner.sign({
 			'api_key': this._apiKey,
