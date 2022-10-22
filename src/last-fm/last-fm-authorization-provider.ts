@@ -1,5 +1,6 @@
 export interface ILastFMAuthorizationProvider {
 	authenticate(): void;
+	checkIsAuthenticated(): boolean;
 }
 
 interface LastFMAuthorizationProviderParams {
@@ -30,6 +31,14 @@ export class LastFMAuthorizationProvider {
 	public authenticate(): void {
 		window.open(this._makeAuthenticationUrl());
 		window.close();
+	}
+
+	public checkIsAuthenticated(): boolean {
+		const currentUrl = new URL(window.location.href);
+
+		console.log(Boolean(currentUrl.searchParams.get('token')));
+
+		return Boolean(currentUrl.searchParams.get('token'));
 	}
 
 	private _makeAuthenticationUrl(): URL {

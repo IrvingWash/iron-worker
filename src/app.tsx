@@ -1,13 +1,33 @@
 import React from 'react';
-import { LastFM } from './last-fm/last-fm';
+import { ILastFM, LastFM } from './last-fm/last-fm';
 
-export class App extends React.Component {
-	private _lastFM = new LastFM();
+interface AppProps {}
+
+interface AppState {
+	isAuthenticated: boolean
+}
+
+export class App extends React.Component<AppProps, AppState> {
+	private _lastFM: ILastFM;
+
+	public constructor(props: AppProps) {
+		super(props);
+
+		this.state = {
+			isAuthenticated: false,
+		};
+
+		this._lastFM = new LastFM();
+	}
+
+	public override componentDidMount(): void {
+		this.setState({ isAuthenticated: this._lastFM.authorizationProvider.checkIsAuthenticated() });
+	}
 
 	public override render(): JSX.Element {
 		return (
 			<div>
-				<button onClick={ this._authorize }>Authorize</button>
+				{ !this.state.isAuthenticated && <button onClick={ this._authorize }>Authorize</button> }
 			</div>
 		);
 	}

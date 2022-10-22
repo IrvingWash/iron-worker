@@ -1,6 +1,10 @@
 import { ensureDefined } from 'src/utils/utils';
 import { ILastFMAuthorizationProvider, LastFMAuthorizationProvider } from './last-fm-authorization-provider';
 
+export interface ILastFM {
+	authorizationProvider: ILastFMAuthorizationProvider;
+}
+
 export class LastFM {
 	public readonly authorizationProvider: ILastFMAuthorizationProvider;
 
