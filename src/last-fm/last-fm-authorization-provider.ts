@@ -1,39 +1,39 @@
 export interface ILastFMAuthorizationProvider {
-	authorize(): void;
+	authenticate(): void;
 }
 
 interface LastFMAuthorizationProviderParams {
 	apiKey: string;
 	baseUrl: URL;
-	baseAuthorizationUrl: URL;
+	baseAuthenticationUrl: URL;
 }
 
 export class LastFMAuthorizationProvider {
 	private _apiKey: string;
 
 	private _baseUrl: URL;
-	private _baseAuthorizationUrl: URL;
+	private _baseAuthenticationUrl: URL;
 
 	public constructor(params: LastFMAuthorizationProviderParams) {
 		const {
 			apiKey,
 			baseUrl,
-			baseAuthorizationUrl,
+			baseAuthenticationUrl,
 		} = params;
 
 		this._apiKey = apiKey;
 
 		this._baseUrl = baseUrl;
-		this._baseAuthorizationUrl = baseAuthorizationUrl;
+		this._baseAuthenticationUrl = baseAuthenticationUrl;
 	}
 
-	public authorize(): void {
-		window.open(this._makeAuthorizationUrl());
+	public authenticate(): void {
+		window.open(this._makeAuthenticationUrl());
 		window.close();
 	}
 
-	private _makeAuthorizationUrl(): URL {
-		const authorizationUrl = new URL(this._baseAuthorizationUrl);
+	private _makeAuthenticationUrl(): URL {
+		const authorizationUrl = new URL(this._baseAuthenticationUrl);
 		authorizationUrl.searchParams.append('api_key', this._apiKey);
 		authorizationUrl.searchParams.append('cb', window.location.href);
 

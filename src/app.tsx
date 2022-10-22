@@ -13,6 +13,6 @@ export class App extends React.Component {
 	}
 
 	private _authorize = (): void => {
-		this._lastFM.authorizationProvider.authorize();
+		this._lastFM.authorizationProvider.authenticate();
 	};
 }
