@@ -1,10 +1,12 @@
 import { ensureDefined } from 'src/utils/utils';
 import { ILastFMAuthorizationProvider, LastFMAuthorizationProvider } from './last-fm-authorization-provider';
 import { ILastFMCallSigner, LastFMCallSigner } from './last-fm-call-signer';
-import { ILastFMCredentialStorage, LastFMCredentialStorage } from './last-fm-credential-storage';
+import { ILastFMCredentialStorage } from './last-fm-credential-storage';
+import { ILastFMTransport, LastFMTransport } from './last-fm-transport';
 
 export interface ILastFM {
 	getAuthorizationProvider(): ILastFMAuthorizationProvider;
+	getTransport(): ILastFMTransport;
 }
 
 export class LastFM implements ILastFM {
@@ -17,6 +19,7 @@ export class LastFM implements ILastFM {
 	private readonly _callSigner: ILastFMCallSigner;
 	private readonly _credentialStorage: ILastFMCredentialStorage;
 	private readonly _authorizationProvider: ILastFMAuthorizationProvider;
+	private readonly _transport: ILastFMTransport;
 
 	public constructor(credentialStorage: ILastFMCredentialStorage) {
 		this._callSigner = new LastFMCallSigner({ sharedSecret: this._sharedSecret });
@@ -30,9 +33,19 @@ export class LastFM implements ILastFM {
 			callSigner: this._callSigner,
 			credentialStorage: this._credentialStorage,
 		});
+
+		this._transport = new LastFMTransport({
+			apiKey: this._apiKey,
+			baseUrl: this._baseUrl,
+			credentialStorage: this._credentialStorage,
+		});
 	}
 
 	public getAuthorizationProvider(): ILastFMAuthorizationProvider {
 		return this._authorizationProvider;
+	}
+
+	public getTransport(): ILastFMTransport {
+		return this._transport;
 	}
 }
