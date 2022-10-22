@@ -1,4 +1,4 @@
-import { LastFMSession } from './last-fm-objects';
+import { LastFMSession } from './last-fm-objects-and-constants.ts/last-fm-objects';
 
 export interface ILastFMCredentialStorage {
 	save(session: LastFMSession): void;

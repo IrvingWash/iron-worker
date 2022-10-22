@@ -1,7 +1,8 @@
 import { ILastFMCallSigner } from './last-fm-call-signer';
 import { ILastFMCredentialStorage } from './last-fm-credential-storage';
 import { lastFMFetch } from './last-fm-fetch';
-import { LastFMSession } from './last-fm-objects';
+import { LastFMSessionMethods } from './last-fm-objects-and-constants.ts/last-fm-constants';
+import { LastFMSession } from './last-fm-objects-and-constants.ts/last-fm-objects';
 
 export interface ILastFMAuthorizationProvider {
 	authenticate(): void;
@@ -99,7 +100,7 @@ export class LastFMAuthorizationProvider {
 
 		authorizationUrl.searchParams.append('api_key', this._apiKey);
 		authorizationUrl.searchParams.append('token', this._authenticationToken);
-		authorizationUrl.searchParams.append('method', 'auth.getSession');
+		authorizationUrl.searchParams.append('method', LastFMSessionMethods.GetSession);
 		authorizationUrl.searchParams.append('format', 'json');
 
 		authorizationUrl.searchParams.append('api_sig', this._callSigner.sign({
