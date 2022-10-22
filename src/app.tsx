@@ -29,10 +29,6 @@ export class App extends React.Component<AppProps, AppState> {
 		this.setState({ isAuthenticated: this._lastFMAuthorizationProvider.checkIsAuthenticated() });
 	}
 
-	public override componentDidUpdate(): void {
-		this.setState({ isAuthorized: this._lastFMAuthorizationProvider.checkIsAuthorized() });
-	}
-
 	public override render(): JSX.Element {
 		return (
 			<div>
@@ -56,5 +52,7 @@ export class App extends React.Component<AppProps, AppState> {
 
 	private _authorize = async (): Promise<void> => {
 		await this._lastFMAuthorizationProvider.authorize();
+
+		this.setState({ isAuthorized: this._lastFMAuthorizationProvider.checkIsAuthorized() });
 	};
 }
