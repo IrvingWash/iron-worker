@@ -7,6 +7,7 @@ export interface ILastFMAuthorizationProvider {
 	authenticate(): void;
 	authorize(): Promise<void>;
 	checkIsAuthenticated(): boolean;
+	checkIsAuthorized(): boolean;
 }
 
 interface LastFMAuthorizationProviderParams {
@@ -58,11 +59,21 @@ export class LastFMAuthorizationProvider {
 
 		const session = await lastFMFetch<LastFMSession>(authorizationUrl);
 
+		if (session.session == undefined) {
+			throw new Error('Unauthorized');
+		}
+
 		this._credentialStorage.save(session);
 	}
 
 	public checkIsAuthenticated(): boolean {
 		return Boolean(this._authenticationToken);
+	}
+
+	public checkIsAuthorized(): boolean {
+		return this._credentialStorage.load() !== null
+			? true
+			: false;
 	}
 
 	private _tryGetAuthenticationToken(): void {

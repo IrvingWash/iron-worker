@@ -4,12 +4,10 @@ import { ILastFMCallSigner, LastFMCallSigner } from './last-fm-call-signer';
 import { ILastFMCredentialStorage, LastFMCredentialStorage } from './last-fm-credential-storage';
 
 export interface ILastFM {
-	authorizationProvider: ILastFMAuthorizationProvider;
+	getAuthorizationProvider(): ILastFMAuthorizationProvider;
 }
 
 export class LastFM implements ILastFM {
-	public readonly authorizationProvider: ILastFMAuthorizationProvider;
-
 	private readonly _apiKey = ensureDefined(process.env.API_KEY);
 	private readonly _sharedSecret = ensureDefined(process.env.SHARED_SECRET);
 
@@ -18,18 +16,23 @@ export class LastFM implements ILastFM {
 
 	private readonly _callSigner: ILastFMCallSigner;
 	private readonly _credentialStorage: ILastFMCredentialStorage;
+	private readonly _authorizationProvider: ILastFMAuthorizationProvider;
 
 	public constructor() {
 		this._callSigner = new LastFMCallSigner({ sharedSecret: this._sharedSecret });
 
 		this._credentialStorage = new LastFMCredentialStorage();
 
-		this.authorizationProvider = new LastFMAuthorizationProvider({
+		this._authorizationProvider = new LastFMAuthorizationProvider({
 			apiKey: this._apiKey,
 			baseUrl: this._baseUrl,
 			baseAuthenticationUrl: this._baseAuthenticationUrl,
 			callSigner: this._callSigner,
 			credentialStorage: this._credentialStorage,
 		});
+	}
+
+	public getAuthorizationProvider(): ILastFMAuthorizationProvider {
+		return this._authorizationProvider;
 	}
 }
