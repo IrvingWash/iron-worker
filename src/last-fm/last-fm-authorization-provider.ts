@@ -1,4 +1,7 @@
 import { ILastFMCallSigner } from './last-fm-call-signer';
+import { ILastFMCredentialStorage } from './last-fm-credential-storage';
+import { lastFMFetch } from './last-fm-fetch';
+import { LastFMSession } from './last-fm-objects';
 
 export interface ILastFMAuthorizationProvider {
 	authenticate(): void;
@@ -11,15 +14,17 @@ interface LastFMAuthorizationProviderParams {
 	baseUrl: URL;
 	baseAuthenticationUrl: URL;
 	callSigner: ILastFMCallSigner;
+	credentialStorage: ILastFMCredentialStorage;
 }
 
 export class LastFMAuthorizationProvider {
-	private _apiKey: string;
+	private readonly _apiKey: string;
 
-	private _baseUrl: URL;
-	private _baseAuthenticationUrl: URL;
+	private readonly _baseUrl: URL;
+	private readonly _baseAuthenticationUrl: URL;
 
-	private _callSigner: ILastFMCallSigner;
+	private readonly _callSigner: ILastFMCallSigner;
+	private readonly _credentialStorage: ILastFMCredentialStorage;
 
 	private _authenticationToken: string | null = null;
 
@@ -29,6 +34,7 @@ export class LastFMAuthorizationProvider {
 			baseUrl,
 			baseAuthenticationUrl,
 			callSigner,
+			credentialStorage,
 		} = params;
 
 		this._tryGetAuthenticationToken();
@@ -39,6 +45,7 @@ export class LastFMAuthorizationProvider {
 		this._baseAuthenticationUrl = baseAuthenticationUrl;
 
 		this._callSigner = callSigner;
+		this._credentialStorage = credentialStorage;
 	}
 
 	public authenticate(): void {
@@ -49,7 +56,9 @@ export class LastFMAuthorizationProvider {
 	public async authorize(): Promise<void> {
 		const authorizationUrl = this._makeAuthorizationUrl();
 
-		await fetch(authorizationUrl);
+		const session = await lastFMFetch<LastFMSession>(authorizationUrl);
+
+		this._credentialStorage.save(session);
 	}
 
 	public checkIsAuthenticated(): boolean {

@@ -1,6 +1,7 @@
 import { ensureDefined } from 'src/utils/utils';
 import { ILastFMAuthorizationProvider, LastFMAuthorizationProvider } from './last-fm-authorization-provider';
 import { ILastFMCallSigner, LastFMCallSigner } from './last-fm-call-signer';
+import { ILastFMCredentialStorage, LastFMCredentialStorage } from './last-fm-credential-storage';
 
 export interface ILastFM {
 	authorizationProvider: ILastFMAuthorizationProvider;
@@ -16,15 +17,19 @@ export class LastFM implements ILastFM {
 	private readonly _baseAuthenticationUrl = new URL('http://www.last.fm/api/auth/');
 
 	private readonly _callSigner: ILastFMCallSigner;
+	private readonly _credentialStorage: ILastFMCredentialStorage;
 
 	public constructor() {
 		this._callSigner = new LastFMCallSigner({ sharedSecret: this._sharedSecret });
+
+		this._credentialStorage = new LastFMCredentialStorage();
 
 		this.authorizationProvider = new LastFMAuthorizationProvider({
 			apiKey: this._apiKey,
 			baseUrl: this._baseUrl,
 			baseAuthenticationUrl: this._baseAuthenticationUrl,
 			callSigner: this._callSigner,
+			credentialStorage: this._credentialStorage,
 		});
 	}
 }

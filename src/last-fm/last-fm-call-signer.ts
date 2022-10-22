@@ -9,7 +9,7 @@ interface LastFMCallSignerParams {
 }
 
 export class LastFMCallSigner implements ILastFMCallSigner {
-	private _sharedSecret: string;
+	private readonly _sharedSecret: string;
 
 	public constructor(params: LastFMCallSignerParams) {
 		const { sharedSecret } = params;

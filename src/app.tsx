@@ -8,7 +8,7 @@ interface AppState {
 }
 
 export class App extends React.Component<AppProps, AppState> {
-	private _lastFM: ILastFM;
+	private readonly _lastFM: ILastFM;
 
 	public constructor(props: AppProps) {
 		super(props);
