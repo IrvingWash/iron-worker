@@ -35,7 +35,8 @@ export class App extends React.Component<AppProps, AppState> {
 	public override componentDidMount(): void {
 		this.setState({
 			isAuthenticated: this._lastFMAuthorizationProvider.checkIsAuthenticated(),
-			username: this._lastFMCredentialStorage.load()?.session.name ?? null,
+			isAuthorized: this._lastFMAuthorizationProvider.checkIsAuthorized(),
+			username: this._tryGetUsername(),
 		});
 	}
 
@@ -60,7 +61,11 @@ export class App extends React.Component<AppProps, AppState> {
 
 		this.setState({
 			isAuthorized: this._lastFMAuthorizationProvider.checkIsAuthorized(),
-			username: this._lastFMCredentialStorage.load()?.session.name ?? null,
+			username: this._tryGetUsername(),
 		});
 	};
+
+	private _tryGetUsername(): string | null {
+		return this._lastFMCredentialStorage.load()?.session.name ?? null;
+	}
 }
