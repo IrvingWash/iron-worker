@@ -1,0 +1,43 @@
+{
+	"name": "hard-scrobbler",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.tsx",
+	"scripts": {
+		"start": "webpack serve --config webpack/webpack.config.js --env env=dev",
+		"build": "webpack --config webpack/webpack.config.js --env env=prod"
+	},
+	"repository": {
+		"type": "git",
+		"url": ""
+	},
+	"author": "WI",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/dotenv-webpack": "^7.0.3",
+		"@types/react": "^18.0.14",
+		"@types/react-dom": "^18.0.5",
+		"@typescript-eslint/eslint-plugin": "^5.29.0",
+		"@typescript-eslint/parser": "^5.29.0",
+		"copy-webpack-plugin": "^11.0.0",
+		"css-loader": "^6.7.1",
+		"eslint": "^8.18.0",
+		"html-webpack-plugin": "^5.5.0",
+		"mini-css-extract-plugin": "^2.6.1",
+		"sass": "^1.52.3",
+		"sass-loader": "^13.0.0",
+		"ts-loader": "^9.3.0",
+		"typescript": "^4.7.4",
+		"webpack": "^5.73.0",
+		"webpack-cli": "^4.10.0",
+		"webpack-dev-server": "^4.9.2",
+		"webpack-merge": "^5.8.0"
+	},
+	"dependencies": {
+		"classnames": "^2.3.1",
+		"dotenv-webpack": "^8.0.1",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-router-dom": "^6.3.0"
+	}
+}

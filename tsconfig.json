@@ -1,0 +1,31 @@
+{
+	"compilerOptions": {
+		"module": "ESNext",
+		"moduleResolution": "node",
+		"target": "ES6",
+		"lib": ["ESNext", "DOM"],
+		"allowJs": true,
+		"strict": true,
+		"jsx": "react",
+		"sourceMap": true,
+		"isolatedModules": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+		"paths": {
+			"src/*": [
+				"./src/*"
+			],
+		}
+	},
+	"include": [
+		"./src/**/*",
+		"declarations.d.ts"
+	],
+	"exclude": [
+		"node_modules",
+		"dist",
+		"webpack"
+	]
+}
