@@ -47,25 +47,19 @@ export class LastFMAuthorizationProvider {
 	}
 
 	public async authorize(): Promise<void> {
-		if (this._authenticationToken === null) {
-			throw new Error('User is not authenticated');
-		}
-
-		const authorizationUrl = new URL(this._baseUrl);
-		authorizationUrl.searchParams.append('api_key', this._apiKey);
-		authorizationUrl.searchParams.append('token', this._authenticationToken);
-		authorizationUrl.searchParams.append('method', 'auth.getSession');
-		authorizationUrl.searchParams.append('api_sig', this._callSigner.sign({
-			'api_key': this._apiKey,
-			'token': this._authenticationToken,
-			'method': 'auth.getSession',
-		}));
+		const authorizationUrl = this._makeAuthorizationUrl();
 
 		await fetch(authorizationUrl);
 	}
 
 	public checkIsAuthenticated(): boolean {
 		return Boolean(this._authenticationToken);
+	}
+
+	private _tryGetAuthenticationToken(): void {
+		const token = new URL(window.location.href).searchParams.get('token');
+
+		this._authenticationToken = token;
 	}
 
 	private _makeAuthenticationUrl(): URL {
@@ -76,9 +70,23 @@ export class LastFMAuthorizationProvider {
 		return authorizationUrl;
 	}
 
-	private _tryGetAuthenticationToken(): void {
-		const token = new URL(window.location.href).searchParams.get('token');
+	private _makeAuthorizationUrl(): URL {
+		if (this._authenticationToken === null) {
+			throw new Error('User is not authenticated');
+		}
 
-		this._authenticationToken = token;
+		const authorizationUrl = new URL(this._baseUrl);
+
+		authorizationUrl.searchParams.append('api_key', this._apiKey);
+		authorizationUrl.searchParams.append('token', this._authenticationToken);
+		authorizationUrl.searchParams.append('method', 'auth.getSession');
+
+		authorizationUrl.searchParams.append('api_sig', this._callSigner.sign({
+			'api_key': this._apiKey,
+			'token': this._authenticationToken,
+			'method': 'auth.getSession',
+		}));
+
+		return authorizationUrl;
 	}
 }
