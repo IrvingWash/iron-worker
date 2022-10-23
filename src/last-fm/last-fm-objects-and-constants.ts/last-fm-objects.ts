@@ -14,6 +14,16 @@ export interface LastFMRecentTracks {
 	};
 }
 
+export interface LastFMAlbum {
+	album: {
+		artist: string;
+		name: string;
+		tracks: {
+			track: LastFMTrack[];
+		}
+	}
+}
+
 export interface LastFMTrack {
 	album: LastFMTrackCommonField;
 	artist: LastFMTrackCommonField;

@@ -38,6 +38,7 @@ export class LastFM implements ILastFM {
 			apiKey: this._apiKey,
 			baseUrl: this._baseUrl,
 			credentialStorage: this._credentialStorage,
+			callSigner: this._callSigner,
 		});
 	}
 
