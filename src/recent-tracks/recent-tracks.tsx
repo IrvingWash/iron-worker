@@ -11,6 +11,7 @@ interface RecentTracksProps {
 
 export function RecentTracks(props: RecentTracksProps): JSX.Element {
 	const [recentTracks, setRecentTracks] = useState<LastFMRecentTracks | null>(null);
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		getRecentTracks();
@@ -19,10 +20,13 @@ export function RecentTracks(props: RecentTracksProps): JSX.Element {
 	return (
 		<div className={ s.recentTracks }>
 			<h3>{
-				recentTracks === null
+				isLoading
 					? 'Loading recent tracks...'
 					: 'Recent tracks:'
 			}</h3>
+
+			<button className={ s.updateButton } onClick={ getRecentTracks }>Update</button>
+
 			<ul>
 				{ makeTracks() }
 			</ul>
@@ -30,7 +34,11 @@ export function RecentTracks(props: RecentTracksProps): JSX.Element {
 	);
 
 	async function getRecentTracks(): Promise<void> {
+		setIsLoading(true);
+
 		setRecentTracks(await props.getRecentTracks());
+
+		setIsLoading(false);
 	}
 
 	function makeTracks(): JSX.Element[] {
