@@ -22,7 +22,7 @@ export function Header(props: HeaderProps): JSX.Element {
 
 	return (
 		<header className={ s.header }>
-			<div>Hard Scrobbler</div>
+			<div>Iron Worker</div>
 			<div>
 				{ !isAuthenticated && !isAuthorized && <button onClick={ authenticate }>Authenticate</button> }
 				{ !isAuthorized && isAuthenticated && <button onClick={ authorize }>Authorize</button> }
