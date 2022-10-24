@@ -13,8 +13,8 @@ export class LastFM implements ILastFM {
 	private readonly _apiKey = ensureDefined(process.env.API_KEY);
 	private readonly _sharedSecret = ensureDefined(process.env.SHARED_SECRET);
 
-	private readonly _baseUrl = new URL('http://ws.audioscrobbler.com/2.0/');
-	private readonly _baseAuthenticationUrl = new URL('http://www.last.fm/api/auth/');
+	private readonly _baseUrl = new URL('https://ws.audioscrobbler.com/2.0/');
+	private readonly _baseAuthenticationUrl = new URL('https://www.last.fm/api/auth/');
 
 	private readonly _callSigner: ILastFMCallSigner;
 	private readonly _credentialStorage: ILastFMCredentialStorage;
