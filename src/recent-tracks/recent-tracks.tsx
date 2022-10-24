@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react';
 
 import { LastFMRecentTracks } from 'src/last-fm/last-fm-objects-and-constants.ts/last-fm-objects';
 import { Track } from './track';
+import { ITrack } from 'src/objects';
 
 import * as s from './recent-tracks.scss';
 
 interface RecentTracksProps {
-	getRecentTracks(): Promise<LastFMRecentTracks>
+	getRecentTracks(): Promise<ITrack[]>
 }
 
 export function RecentTracks(props: RecentTracksProps): JSX.Element {
-	const [recentTracks, setRecentTracks] = useState<LastFMRecentTracks | null>(null);
+	const [recentTracks, setRecentTracks] = useState<ITrack[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
@@ -46,13 +47,13 @@ export function RecentTracks(props: RecentTracksProps): JSX.Element {
 			return [];
 		}
 
-		return recentTracks.recenttracks.track.map((track) => {
+		return recentTracks.map((track) => {
 			return (
-				<li key={ track.mbid + track.date['#text'] }>
+				<li key={ track.id + track.date }>
 					<Track
-						artist={ track.artist['#text'] }
-						album={ track.album['#text'] }
-						title={ track.name }
+						artist={ track.artist }
+						album={ track.album }
+						title={ track.title }
 					/>
 				</li>
 			);

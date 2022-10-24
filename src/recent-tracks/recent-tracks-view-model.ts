@@ -1,8 +1,9 @@
-import { LastFMRecentTracks } from 'src/last-fm/last-fm-objects-and-constants.ts/last-fm-objects';
+import { convertLastFMRecentTracks } from 'src/last-fm/converters/last-fm-track-converter';
 import { ILastFMTransport } from 'src/last-fm/last-fm-transport';
+import { ITrack } from 'src/objects';
 
 export interface IRecentTracksViewModel {
-	getRecentTracks(): Promise<LastFMRecentTracks>;
+	getRecentTracks(): Promise<ITrack[]>;
 }
 
 export class RecentTracksViewModel implements IRecentTracksViewModel {
@@ -12,7 +13,7 @@ export class RecentTracksViewModel implements IRecentTracksViewModel {
 		this._lastFMTransport = lastFMTransport;
 	}
 
-	public getRecentTracks = async (): Promise<LastFMRecentTracks> => {
-		return await this._lastFMTransport.getRecentTracks();
+	public getRecentTracks = async (): Promise<ITrack[]> => {
+		return convertLastFMRecentTracks(await this._lastFMTransport.getRecentTracks());
 	};
 }
