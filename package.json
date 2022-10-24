@@ -4,6 +4,8 @@
 	"description": "",
 	"main": "index.tsx",
 	"scripts": {
+		"predeploy" : "npm run build",
+		"deploy" : "gh-pages -d build",
 		"start": "webpack serve --config webpack/webpack.config.js --env env=dev",
 		"build": "webpack --config webpack/webpack.config.js --env env=prod"
 	},
@@ -22,6 +24,7 @@
 		"copy-webpack-plugin": "^11.0.0",
 		"css-loader": "^6.7.1",
 		"eslint": "^8.18.0",
+		"gh-pages": "^4.0.0",
 		"html-webpack-plugin": "^5.5.0",
 		"mini-css-extract-plugin": "^2.6.1",
 		"sass": "^1.52.3",
