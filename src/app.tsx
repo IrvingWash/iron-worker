@@ -58,9 +58,6 @@ export class App extends React.Component<AppProps, AppState> {
 					authenticate={ this._authenticate }
 					authorize={ this._authorize }
 				/>
-				<button onClick={ this._getRecentTracks }>Recent tracks</button>
-				<button onClick={ this._scrobbleTrack }>Scrobble track</button>
-				<button onClick={ this._getAlbumInfo }>Get album info</button>
 				<button onClick={ this._scrobbleAlbum }>Scrobble Album</button>
 			</>
 		);
@@ -79,20 +76,8 @@ export class App extends React.Component<AppProps, AppState> {
 		});
 	};
 
-	private _getRecentTracks = async (): Promise<void> => {
-		await this._lastFMTransport.getRecentTracks();
-	};
-
-	private _getAlbumInfo = async(): Promise<void> => {
-		await this._lastFMTransport.getAlbumInfo('Orgone', 'The Goliath');
-	};
-
-	private _scrobbleTrack = async (): Promise<void> => {
-		await this._lastFMTransport.scrobbleTrack('Over Spirit', 'Krallice');
-	};
-
 	private _scrobbleAlbum = async (): Promise<void> => {
-		await this._lastFMTransport.scrobbleAlbum('Orgone', 'The Goliath');
+		await this._lastFMTransport.scrobbleAlbum('Castevet', 'Mounds Of Ash');
 	};
 
 	private _tryGetUsername(): string | null {

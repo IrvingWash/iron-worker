@@ -58,6 +58,7 @@ export class LastFMTransport {
 
 	public async scrobbleAlbum(artist: string, album: string): Promise<void> {
 		const albumInfo = await this.getAlbumInfo(artist, album);
+
 		for (const track of albumInfo.album.tracks.track) {
 			await this.scrobbleTrack(track.name, albumInfo.album.artist);
 		}
