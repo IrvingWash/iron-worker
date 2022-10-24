@@ -25,7 +25,7 @@ export function Header(props: HeaderProps): JSX.Element {
 			<div>Hard Scrobbler</div>
 			<div>
 				{ !isAuthenticated && !isAuthorized && <button onClick={ authenticate }>Authenticate</button> }
-				{ !isAuthorized && <button onClick={ authorize }>Authorize</button> }
+				{ !isAuthorized && isAuthenticated && <button onClick={ authorize }>Authorize</button> }
 				<h4>{ username }</h4>
 			</div>
 		</header>

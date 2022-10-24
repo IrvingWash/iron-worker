@@ -4,6 +4,8 @@ import { ILastFM, LastFM } from './last-fm/last-fm';
 import { ILastFMAuthorizationProvider } from './last-fm/last-fm-authorization-provider';
 import { ILastFMCredentialStorage, LastFMCredentialStorage } from './last-fm/last-fm-credential-storage';
 import { ILastFMTransport } from './last-fm/last-fm-transport';
+import { ScrobblerControlContainer } from './scrobbler/scrobbler-control-container';
+import { IScrobblerViewModel, ScrobblerViewModel } from './scrobbler/scrobbler-view-model';
 
 import { Header } from './ui-kit/header';
 
@@ -22,6 +24,7 @@ export class App extends React.Component<AppProps, AppState> {
 
 	private readonly _lastFMAuthorizationProvider: ILastFMAuthorizationProvider;
 	private readonly _lastFMTransport: ILastFMTransport;
+	private readonly _scrobblerModel: IScrobblerViewModel;
 
 	public constructor(props: AppProps) {
 		super(props);
@@ -38,6 +41,7 @@ export class App extends React.Component<AppProps, AppState> {
 
 		this._lastFMAuthorizationProvider = this._lastFM.getAuthorizationProvider();
 		this._lastFMTransport = this._lastFM.getTransport();
+		this._scrobblerModel = new ScrobblerViewModel(this._lastFMTransport);
 	}
 
 	public override componentDidMount(): void {
@@ -58,7 +62,11 @@ export class App extends React.Component<AppProps, AppState> {
 					authenticate={ this._authenticate }
 					authorize={ this._authorize }
 				/>
-				<button onClick={ this._scrobbleAlbum }>Scrobble Album</button>
+				{
+					this.state.isAuthorized
+						? <ScrobblerControlContainer model={ this._scrobblerModel } />
+						: <p>You need to authorize to start scrobbling</p>
+				}
 			</>
 		);
 	}
@@ -74,10 +82,6 @@ export class App extends React.Component<AppProps, AppState> {
 			isAuthorized: this._lastFMAuthorizationProvider.checkIsAuthorized(),
 			username: this._tryGetUsername(),
 		});
-	};
-
-	private _scrobbleAlbum = async (): Promise<void> => {
-		await this._lastFMTransport.scrobbleAlbum('Castevet', 'Mounds Of Ash');
 	};
 
 	private _tryGetUsername(): string | null {
