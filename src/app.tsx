@@ -4,6 +4,8 @@ import { ILastFM, LastFM } from './last-fm/last-fm';
 import { ILastFMAuthorizationProvider } from './last-fm/last-fm-authorization-provider';
 import { ILastFMCredentialStorage, LastFMCredentialStorage } from './last-fm/last-fm-credential-storage';
 import { ILastFMTransport } from './last-fm/last-fm-transport';
+import { RecentTracksControlContainer } from './recent-tracks/recent-tracks-control-container';
+import { IRecentTracksViewModel, RecentTracksViewModel } from './recent-tracks/recent-tracks-view-model';
 import { ScrobblerControlContainer } from './scrobbler/scrobbler-control-container';
 import { IScrobblerViewModel, ScrobblerViewModel } from './scrobbler/scrobbler-view-model';
 
@@ -24,7 +26,9 @@ export class App extends React.Component<AppProps, AppState> {
 
 	private readonly _lastFMAuthorizationProvider: ILastFMAuthorizationProvider;
 	private readonly _lastFMTransport: ILastFMTransport;
+
 	private readonly _scrobblerModel: IScrobblerViewModel;
+	private readonly _recentTracksModel: IRecentTracksViewModel;
 
 	public constructor(props: AppProps) {
 		super(props);
@@ -41,7 +45,9 @@ export class App extends React.Component<AppProps, AppState> {
 
 		this._lastFMAuthorizationProvider = this._lastFM.getAuthorizationProvider();
 		this._lastFMTransport = this._lastFM.getTransport();
+
 		this._scrobblerModel = new ScrobblerViewModel(this._lastFMTransport);
+		this._recentTracksModel = new RecentTracksViewModel(this._lastFMTransport);
 	}
 
 	public override componentDidMount(): void {
@@ -66,6 +72,11 @@ export class App extends React.Component<AppProps, AppState> {
 					this.state.isAuthorized
 						? <ScrobblerControlContainer model={ this._scrobblerModel } />
 						: <p>You need to authorize to start scrobbling</p>
+				}
+				{
+					this.state.isAuthorized
+						? <RecentTracksControlContainer model={ this._recentTracksModel } />
+						: null
 				}
 			</>
 		);

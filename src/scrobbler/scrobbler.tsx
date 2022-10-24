@@ -18,6 +18,7 @@ export function Scrobbler(props: ScrobblerProps): JSX.Element {
 
 	return (
 		<form onSubmit={ handleScrobble} className={ s.scrobbler }>
+			<h2>Scrobble album:</h2>
 			<input
 				className={ s.scrobblerControl }
 				type='text'
